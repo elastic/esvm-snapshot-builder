@@ -8,4 +8,4 @@ docker build -t esvm-builder-gradle -f gradle/Dockerfile gradle
 docker build -t esvm-builder-maven -f maven/Dockerfile maven
 node generate-config.js
 docker-compose up --remove-orphans -d
-docker-compose logs -f
+COMPOSE_HTTP_TIMEOUT=1000 docker-compose logs -f

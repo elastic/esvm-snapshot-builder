@@ -8,4 +8,4 @@ RUN \
   curl "$MVN_URL" | tar zx --strip-components=1 -C /maven; \
   ln -s "/maven/bin/mvn" /usr/bin/mvn;
 
-CMD ["/with-profile.sh", "node", "build.js", "maven"]
+CMD ["node", "build.js", "maven"]

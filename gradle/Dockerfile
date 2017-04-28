@@ -8,4 +8,4 @@ RUN \
   rm gradle.zip; \
   ln -s "${pwd}/gradle-3.3/bin/gradle" /usr/bin/gradle;
 
-CMD ["/with-profile.sh", "node", "build.js", "gradle"]
+CMD ["node", "build.js", "gradle"]

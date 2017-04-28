@@ -1,16 +1,17 @@
 const { writeFileSync } = require('fs')
-const { resolve, join } = require('path')
+const { resolve } = require('path')
 
 const jsYaml = require('js-yaml')
 
 const branches = [
   'master',
   '5.x',
+  '5.4',
   '5.3',
-  '5.2',
+  '5.2'
   // '5.1',
   // '5.0',
-  '2.4'
+  // '2.4',
   // '2.3',
   // '2.2',
   // '2.1',
@@ -34,10 +35,7 @@ const services = branches.reduce((all, b) => {
       ],
       environment: {
         BRANCH: b
-      },
-      volumes: [
-        `./${join('repos', b)}:/repo`
-      ]
+      }
     }
   })
 }, {})

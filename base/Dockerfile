@@ -4,13 +4,8 @@ RUN \
   set -e; \
   apt-get update; \
   apt-get upgrade -y; \
-  apt-get dist-upgrade -y;
-  
-RUN apt-get install -y git
-RUN apt-get install -y curl
-RUN apt-get install -y xz-utils
-RUN apt-get install -y unzip
-RUN apt-get install -y wget
+  apt-get dist-upgrade -y; \
+  apt-get install -y git curl xz-utils unzip wget python3-pip;
 
 # install node
 RUN groupadd --gid 1000 node \
@@ -41,19 +36,17 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
   
-  
 # install aws cli
-RUN apt-get install -y python3-pip
 RUN pip3 install --upgrade pip
 RUN pip3 install awscli
 RUN aws --version;
 
 # install java
-RUN \
-  set -e; \
-  curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh; \
-  jabba install 1.8; \
-  jabba alias default 1.8;
+# Server JRE (https://goo.gl/2MsPoh)
+ENV JAVA_VERSION "1.8.121"
+RUN curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | \
+    JABBA_COMMAND="install $JAVA_VERSION" bash
+ENV JAVA_HOME /root/.jabba/jdk/$JAVA_VERSION
+ENV PATH $JAVA_HOME/bin:$PATH
   
 COPY build.js /build.js
-COPY with-profile.sh /with-profile.sh

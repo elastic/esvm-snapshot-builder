@@ -19,7 +19,7 @@ const pickBuildMode = () => {
     case 'maven':
       return () => exec(REPO_DIR, 'mvn', ['clean', 'package', '-DskipTests'])
     case 'gradle':
-      return () => exec(REPO_DIR, 'gradle', ['assemble'])
+      return () => exec(REPO_DIR, 'gradle', ['assemble', '--stacktrace'])
     default :
       throw new Error(`invalid build mode ${mode}`)
   }
@@ -53,13 +53,8 @@ const getZipPaths = () =>
   list(exec(REPO_DIR, 'find', ['distribution/zip', '-name', '*elasticsearch*.zip'], 'pipe'))
 
 const runBuild = pickBuildMode()
-if (!existsSync(resolve(REPO_DIR, '.git'))) {
-  exec(ROOT_DIR, 'git', ['clone', REPO_URL, '--branch', BRANCH, '--depth', 1, REPO_DIR])
-} else {
-  exec(REPO_DIR, 'git', ['fetch', 'origin', BRANCH])
-  exec(REPO_DIR, 'git', ['reset', '--hard', 'FETCH_HEAD'])
-  exec(REPO_DIR, 'git', ['clean', '-fd'])
-}
+exec(ROOT_DIR, 'mkdir', ['-p', REPO_DIR])
+exec(ROOT_DIR, 'git', ['clone', REPO_URL, '--branch', BRANCH, '--depth', 1, REPO_DIR])
 runBuild()
 exec(REPO_DIR, 'aws', ['s3', 'cp', one(getTarballPaths()), `s3://${join(BUCKET_PREFIX, BRANCH)}.tar.gz`])
 exec(REPO_DIR, 'aws', ['s3', 'cp', one(getZipPaths()), `s3://${join(BUCKET_PREFIX, BRANCH)}.zip`])

@@ -10,8 +10,6 @@ services:
       - .env
     environment:
       BRANCH: master
-    volumes:
-      - './repos/master:/repo'
   5.x:
     tty: true
     container_name: 5.x
@@ -21,8 +19,15 @@ services:
       - .env
     environment:
       BRANCH: 5.x
-    volumes:
-      - './repos/5.x:/repo'
+  '5.4':
+    tty: true
+    container_name: '5.4'
+    image: esvm-builder-gradle
+    env_file:
+      - .env.defaults
+      - .env
+    environment:
+      BRANCH: '5.4'
   '5.3':
     tty: true
     container_name: '5.3'
@@ -32,8 +37,6 @@ services:
       - .env
     environment:
       BRANCH: '5.3'
-    volumes:
-      - './repos/5.3:/repo'
   '5.2':
     tty: true
     container_name: '5.2'
@@ -43,16 +46,3 @@ services:
       - .env
     environment:
       BRANCH: '5.2'
-    volumes:
-      - './repos/5.2:/repo'
-  '2.4':
-    tty: true
-    container_name: '2.4'
-    image: esvm-builder-maven
-    env_file:
-      - .env.defaults
-      - .env
-    environment:
-      BRANCH: '2.4'
-    volumes:
-      - './repos/2.4:/repo'
