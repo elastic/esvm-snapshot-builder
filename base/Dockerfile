@@ -43,7 +43,7 @@ RUN aws --version;
 
 # install java
 # Server JRE (https://goo.gl/2MsPoh)
-ENV JAVA_VERSION "1.8.121"
+ENV JAVA_VERSION "1.8.131"
 RUN curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | \
     JABBA_COMMAND="install $JAVA_VERSION" bash
 ENV JAVA_HOME /root/.jabba/jdk/$JAVA_VERSION
