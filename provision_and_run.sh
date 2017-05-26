@@ -23,7 +23,7 @@ function remove_docker_machine {
  docker-machine rm -f -y esvm-snapshot-builder
 }
 
-create_docker_machine
 trap remove_docker_machine EXIT
+create_docker_machine
 eval "$(docker-machine env --shell bash esvm-snapshot-builder)"
 ./run.sh
