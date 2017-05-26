@@ -18,7 +18,7 @@ const pickBuildMode = () => {
     case 'maven':
       return () => exec(REPO_DIR, 'mvn', ['clean', 'package', '-DskipTests'])
     case 'gradle':
-      return () => exec(REPO_DIR, 'gradle', ['assemble', '--stacktrace'])
+      return () => exec(REPO_DIR, 'gradle', ['clean', ':distribution:tar:assemble', ':distribution:zip:assemble', '--stacktrace'])
     default :
       throw new Error(`invalid build mode ${mode}`)
   }
