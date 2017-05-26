@@ -1,6 +1,5 @@
-const { existsSync } = require('fs')
 const { execFileSync } = require('child_process')
-const { join, resolve } = require('path')
+const { join } = require('path')
 
 const {
   BRANCH,
