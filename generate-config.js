@@ -19,22 +19,23 @@ const branches = [
 ]
 
 const version = '2'
-const services = branches.reduce((all, b) => {
-  const image = parseInt(b.split('.')[0], 10) < 3
+const services = branches.reduce((all, branch) => {
+  const [major] = branch.split()
+  const image = parseInt(major, 10) < 3
     ? 'esvm-builder-maven'
     : 'esvm-builder-gradle'
 
   return Object.assign(all, {
-    [b]: {
+    [branch]: {
       tty: true,
-      container_name: b,
+      container_name: branch,
       image,
       env_file: [
         '.env.defaults',
         '.env'
       ],
       environment: {
-        BRANCH: b
+        BRANCH: branch
       }
     }
   })
