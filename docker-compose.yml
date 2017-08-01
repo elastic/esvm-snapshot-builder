@@ -10,21 +10,21 @@ services:
       - .env
     environment:
       BRANCH: master
-  5.x:
+  '6.0':
     tty: true
-    container_name: 5.x
+    container_name: '6.0'
     image: esvm-builder-gradle
     env_file:
       - .env.defaults
       - .env
     environment:
-      BRANCH: 5.x
-  '5.5':
+      BRANCH: '6.0'
+  6.x:
     tty: true
-    container_name: '5.5'
+    container_name: 6.x
     image: esvm-builder-gradle
     env_file:
       - .env.defaults
       - .env
     environment:
-      BRANCH: '5.5'
+      BRANCH: 6.x

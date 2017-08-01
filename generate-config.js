@@ -1,3 +1,5 @@
+/* eslint comma-dangle: [error, always-multiline] */
+
 const { writeFileSync } = require('fs')
 const { resolve } = require('path')
 
@@ -5,8 +7,11 @@ const jsYaml = require('js-yaml')
 
 const branches = [
   'master',
-  '5.x',
-  '5.5'
+  '6.0',
+  '6.x',
+  // '5.x',
+  // '5.6',
+  // '5.5',
   // '5.4',
   // '5.3',
   // '5.2'
@@ -33,12 +38,12 @@ const services = branches.reduce((all, branch) => {
       image,
       env_file: [
         '.env.defaults',
-        '.env'
+        '.env',
       ],
       environment: {
-        BRANCH: branch
-      }
-    }
+        BRANCH: branch,
+      },
+    },
   })
 }, {})
 
