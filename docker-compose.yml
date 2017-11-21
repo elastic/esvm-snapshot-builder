@@ -28,3 +28,12 @@ services:
       - .env
     environment:
       BRANCH: 6.x
+  '5.6':
+    tty: true
+    container_name: '5.6'
+    image: esvm-builder-gradle
+    env_file:
+      - .env.defaults
+      - .env
+    environment:
+      BRANCH: '5.6'
