@@ -4,6 +4,7 @@ set -e;
 
 dir="$(pwd)"
 repo="$dir/es_repo"
+target="$dir/target"
 
 if [ -z "$ES_BRANCH" ]; then
   echo "ES_BRANCH environment variable must be set to run build.sh"
@@ -28,7 +29,7 @@ cd "$repo"
 "$dir/gradlew" clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
 cd -
 
-echo " -- copying artifacts to $dir/target"
-mkdir -p "$dir/target"
-find "$repo/distribution/zip" -name '*elasticsearch*.zip' -execdir cp '{}' "$dir/target/${ES_BRANCH}.zip" ';'
-find "$repo/distribution/tar" -name '*.tar.gz' -execdir cp '{}' "$dir/target/${ES_BRANCH}.tar.gz" ';'
+echo " -- copying artifacts to $target"
+mkdir -p "$target"
+find "$repo/distribution/zip" -name '*elasticsearch*.zip' -execdir cp '{}' "$target/$ES_BRANCH.zip" ';'
+find "$repo/distribution/tar" -name '*.tar.gz' -execdir cp '{}' "$target/$ES_BRANCH.tar.gz" ';'
