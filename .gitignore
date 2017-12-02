@@ -1,2 +1,4 @@
 /.gradle/
 /.env
+/es_repo
+/target
