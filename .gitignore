@@ -1,4 +1,2 @@
-node_modules
-.env
-provision-and-run.sh
 .gradle/
+.env
