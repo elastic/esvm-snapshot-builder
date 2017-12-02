@@ -1,14 +1,15 @@
 # esvm-snapshot-builder
 
-A collection of docker containers for building the esvm snapshots.
+A build script regularly run by Jenkins to produce the snapshot builds that Kibana uses for testing and development
 
-## setup
+## environment vars
 
-1. Create a `.env` file at the root of the repository with values for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3_BUCKET`, and `S3_PREFIX`
-3. execute `./run.sh` in a terminal and watch the build go
+`./build.sh` looks for a couple environment variables for configuration
+
+<dl>
+  <dt><code>ES_REMOTE</code></dt>
+  <dd>the git remote to clone for building</dd>
   
-Keep in mind:
-- the command will continue to run in the background if you `ctrl-c` as the logs are streaming
-- `docker-compose down` will stop the containers, and they will naturally stop after they build once
-- `docker-compose logs -f` will start streaming the logs again
-- The list of branches to build are in `generate-config.js`
+  <dt><code>ES_BRANCH</code></dt>
+  <dd>the remote branch to build, produces <code>target/$ES_BRANCH.zip</code> and <code>target/$ES_BRANCH.tar.gz</code> files</dd>
+</dl>
