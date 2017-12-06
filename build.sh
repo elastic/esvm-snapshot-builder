@@ -31,5 +31,11 @@ cd -
 
 echo " -- copying artifacts to $target"
 mkdir -p "$target"
+echo "{
+  \"repo\":\"${ES_REMOTE}\",
+  \"branch\":\"${ES_BRANCH}\",
+  \"commit\":\"$(git rev-parse --verify HEAD)\",
+  \"time\":$(date +"%s")
+}" >> "$target/$ES_BRANCH.json"
 find "$repo/distribution/zip" -name '*elasticsearch*.zip' -execdir cp '{}' "$target/$ES_BRANCH.zip" ';'
 find "$repo/distribution/tar" -name '*.tar.gz' -execdir cp '{}' "$target/$ES_BRANCH.tar.gz" ';'
