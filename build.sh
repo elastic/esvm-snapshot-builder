@@ -32,7 +32,6 @@ git clone "$ES_REMOTE" --branch "$ES_BRANCH" --depth 1 "$repo"
   esCommitTime="$(git show -s --format=%at "$esCommit")"
 
   echo " -- building elasticsearch"
-  export GIT_COMMIT=esCommit
   "$dir/gradlew" clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
 
   cd -
