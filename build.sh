@@ -24,22 +24,28 @@ fi
 echo " -- cloning elasticsearch $ES_BRANCH to $repo"
 git clone "$ES_REMOTE" --branch "$ES_BRANCH" --depth 1 "$repo"
 
-echo " -- reading git info from es repo"
-esCommit="$(git rev-parse --verify $ES_BRANCH)"
+{
+  cd "$repo"
 
-echo " -- building elasticsearch"
-cd "$repo"
-export GIT_COMMIT=esCommit
-"$dir/gradlew" clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
-cd -
+  echo " -- reading git info from es repo"
+  esCommit="$(git rev-parse --verify HEAD)"
+  esCommitTime="$(git show -s --format=%at "$esCommit")"
+
+  echo " -- building elasticsearch"
+  export GIT_COMMIT=esCommit
+  "$dir/gradlew" clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
+
+  cd -
+}
 
 echo " -- copying artifacts to $target"
 mkdir -p "$target"
 echo "{
-  \"repo\":\"${ES_REMOTE}\",
-  \"branch\":\"${ES_BRANCH}\",
-  \"commit\":\"$(git rev-parse --verify HEAD)\",
-  \"time\":$(date +"%s")
+  \"esRepo\":\"${ES_REMOTE}\",
+  \"esBranch\":\"${ES_BRANCH}\",
+  \"esCommit\": \"${esCommit}\",
+  \"esCommitTime\": ${esCommitTime},
+  \"buildTime\": $(date +"%s")
 }" >> "$target/$ES_BRANCH.json"
 find "$repo/distribution/zip" -name '*elasticsearch*.zip' -execdir cp '{}' "$target/$ES_BRANCH.zip" ';'
 find "$repo/distribution/tar" -name '*.tar.gz' -execdir cp '{}' "$target/$ES_BRANCH.tar.gz" ';'
