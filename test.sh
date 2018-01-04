@@ -2,9 +2,13 @@
 
 set -e
 
-echo " - building master locally (in docker)"
-rm -rf ./target
-./buildLocal.sh master >/dev/null
+if [ -d ./target ]; then
+  echo " - clearing old build output"
+  rm -rf ./target
+fi
+
+echo " - building master in docker"
+./build-docker.sh master >/dev/null
 
 cd ./target
 
