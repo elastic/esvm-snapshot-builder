@@ -24,8 +24,12 @@ fi
 echo " -- cloning elasticsearch $ES_BRANCH to $repo"
 git clone "$ES_REMOTE" --branch "$ES_BRANCH" --depth 1 "$repo"
 
+echo " -- reading git info from es repo"
+esCommit="$(git rev-parse --verify $ES_BRANCH)"
+
 echo " -- building elasticsearch"
 cd "$repo"
+export GIT_COMMIT=esCommit
 "$dir/gradlew" clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
 cd -
 
