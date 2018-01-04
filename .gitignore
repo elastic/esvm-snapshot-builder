@@ -2,3 +2,4 @@
 /.env
 /es_repo
 /target
+.DS_Store

@@ -6,9 +6,9 @@ RUN \
   apt-get upgrade -y; \
   apt-get install -y git curl;
 
-WORKDIR /snapshot
-COPY /gradle /snapshot/gradle
-COPY /build.sh /snapshot/build.sh
-COPY /gradlew /snapshot/gradlew
+WORKDIR /workdir
+COPY /gradle /workdir/gradle
+COPY /build.sh /workdir/build.sh
+COPY /gradlew /workdir/gradlew
 
 ENTRYPOINT ["./build.sh"]

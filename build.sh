@@ -24,18 +24,18 @@ fi
 echo " -- cloning elasticsearch $ES_BRANCH to $repo"
 git clone "$ES_REMOTE" --branch "$ES_BRANCH" --depth 1 "$repo"
 
-{
-  cd "$repo"
+## enter elasticsearch repo
+cd "$repo"
 
-  echo " -- reading git info from es repo"
-  esCommit="$(git rev-parse --verify HEAD)"
-  esCommitTime="$(git show -s --format=%at "$esCommit")"
+echo " -- reading git info from elasticsearch repo"
+esCommit="$(git rev-parse --verify HEAD)"
+esCommitTime="$(git show -s --format=%at "$esCommit")"
 
-  echo " -- building elasticsearch"
-  "$dir/gradlew" clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
+echo " -- building elasticsearch"
+"$dir/gradlew" clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
 
-  cd -
-}
+## return to working directory
+cd "$dir"
 
 echo " -- copying artifacts to $target"
 mkdir -p "$target"
