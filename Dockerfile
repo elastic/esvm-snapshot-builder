@@ -7,8 +7,6 @@ RUN \
   apt-get install -y git curl;
 
 WORKDIR /workdir
-COPY /gradle /workdir/gradle
 COPY /build.sh /workdir/build.sh
-COPY /gradlew /workdir/gradlew
 
 ENTRYPOINT ["./build.sh"]

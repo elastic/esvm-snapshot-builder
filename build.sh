@@ -16,7 +16,7 @@ if [ -z "$ES_REMOTE" ]; then
   exit 1
 fi
 
-if [ ! -x "$dir/gradlew" ] || [ ! -x "$dir/build.sh" ]; then
+if [ ! -x "$dir/build.sh" ]; then
   echo "esvm-snapshot-builder/build.sh must be run from within the repo"
 fi
 
@@ -32,7 +32,7 @@ esCommit="$(git rev-parse --verify HEAD)"
 esCommitTime="$(git show -s --format=%at "$esCommit")"
 
 echo " -- building elasticsearch"
-"$dir/gradlew" clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
+./gradlew clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
 
 ## return to working directory
 cd "$dir"
