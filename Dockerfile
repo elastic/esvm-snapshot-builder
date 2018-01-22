@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-slim-stretch
+FROM openjdk:9.0.1-11-jdk-slim
 
 RUN \
   set -e; \
