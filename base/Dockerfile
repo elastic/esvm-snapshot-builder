@@ -35,18 +35,16 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
-  
+
 # install aws cli
 RUN pip3 install --upgrade pip
 RUN pip3 install awscli
 RUN aws --version;
 
 # install java
-# Server JRE (https://goo.gl/2MsPoh)
-ENV JAVA_VERSION "1.8.131"
-RUN curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | \
-    JABBA_COMMAND="install zulu@$JAVA_VERSION -o /jdk" bash
-ENV JAVA_HOME /jdk
-ENV PATH $JAVA_HOME/bin:$PATH
+# direct download of recent 9.0.4 to avoid https://bugs.java.com/view_bug.do?bug_id=8189357
+RUN wget -qO- https://download.java.net/java/GA/jdk9/9.0.4/binaries/openjdk-9.0.4_linux-x64_bin.tar.gz | tar xz -C /opt/
+ENV JAVA_HOME /opt/jdk-9.0.4
+ENV PATH /root/jdk-9.0.4/bin/:$PATH
 
 COPY build.js /build.js
