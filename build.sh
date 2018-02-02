@@ -27,6 +27,11 @@ git clone "$ES_REMOTE" --branch "$ES_BRANCH" --depth 1 "$repo"
 ## enter elasticsearch repo
 cd "$repo"
 
+if grep 'JDK 9 is required' CONTRIBUTING.md; then
+  export RUNTIME_JAVA_HOME=$HOME/.java/java8
+  export JAVA_HOME=$HOME/.java/java9
+fi
+
 echo " -- reading git info from elasticsearch repo"
 esCommit="$(git rev-parse --verify HEAD)"
 esCommitTime="$(git show -s --format=%at "$esCommit")"
