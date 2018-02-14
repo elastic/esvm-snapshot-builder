@@ -27,7 +27,7 @@ git clone "$ES_REMOTE" --branch "$ES_BRANCH" --depth 1 "$repo"
 ## enter elasticsearch repo
 cd "$repo"
 
-if grep 'JDK 9 is required' CONTRIBUTING.md; then
+if [ "$JAVA_HOME" != "/opt/jdk-9.0.4" ] && grep 'JDK 9 is required' CONTRIBUTING.md; then
   export RUNTIME_JAVA_HOME=$HOME/.java/java8
   export JAVA_HOME=$HOME/.java/java9
 fi
@@ -37,7 +37,17 @@ esCommit="$(git rev-parse --verify HEAD)"
 esCommitTime="$(git show -s --format=%at "$esCommit")"
 
 echo " -- building elasticsearch"
-./gradlew clean :distribution:tar:assemble :distribution:zip:assemble --stacktrace
+
+esBuildProj=":distribution"
+esBuildDir="$repo/distribution"
+if [ -d "$repo/distribution/archives" ]; then
+  esBuildProj=":distribution:archives"
+  esBuildDir="$repo/distribution/archives"
+fi
+
+echo "-- running ./gradlew clean \"$esBuildProj:tar:assemble\" \"$esBuildProj:zip:assemble\" --stacktrace"
+
+./gradlew clean "$esBuildProj:tar:assemble" "$esBuildProj:zip:assemble" --stacktrace
 
 ## return to working directory
 cd "$dir"
@@ -51,5 +61,6 @@ echo "{
   \"esCommitTime\": ${esCommitTime},
   \"buildTime\": $(date +"%s")
 }" >> "$target/$ES_BRANCH.json"
-find "$repo/distribution/zip" -name '*elasticsearch*.zip' -execdir cp '{}' "$target/$ES_BRANCH.zip" ';'
-find "$repo/distribution/tar" -name '*.tar.gz' -execdir cp '{}' "$target/$ES_BRANCH.tar.gz" ';'
+
+find "$esBuildDir/zip/build" -name '*elasticsearch*.zip' -execdir cp '{}' "$target/$ES_BRANCH.zip" ';'
+find "$esBuildDir/tar/build" -name '*.tar.gz' -execdir cp '{}' "$target/$ES_BRANCH.tar.gz" ';'

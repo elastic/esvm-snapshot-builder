@@ -8,7 +8,7 @@ if [ -d ./target ]; then
 fi
 
 echo " - building master in docker"
-./build-docker.sh master >/dev/null
+./build-docker.sh master
 
 cd ./target
 
