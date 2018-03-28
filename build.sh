@@ -27,9 +27,14 @@ git clone "$ES_REMOTE" --branch "$ES_BRANCH" --depth 1 "$repo"
 ## enter elasticsearch repo
 cd "$repo"
 
-if [ "$JAVA_HOME" != "/opt/jdk-9.0.4" ] && grep 'JDK 9 is required' CONTRIBUTING.md; then
+if [ "$FORCE_JAVA_INSTALL" != "true" ] && grep 'JDK 9 is required' CONTRIBUTING.md; then
   export RUNTIME_JAVA_HOME=$HOME/.java/java8
   export JAVA_HOME=$HOME/.java/java9
+fi
+
+if [ "$FORCE_JAVA_INSTALL" != "true" ] && grep 'JDK 10 is required' CONTRIBUTING.md; then
+  export RUNTIME_JAVA_HOME=$HOME/.java/java8
+  export JAVA_HOME=$HOME/.java/openjdk10
 fi
 
 echo " -- reading git info from elasticsearch repo"
